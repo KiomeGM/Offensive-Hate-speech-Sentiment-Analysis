@@ -63,10 +63,10 @@ with tab1:
          
 with tab2:
    st.markdown("""
-            Offensive language and hate speech has strong linkage to a global increase in physical and psychological violence. <br>
-            Social media companies and governments have unfortunately been forced to impose limitations to freedom of speech.<br>
+            Offensive language and hate speech has strong linkage to a global increase in physical and psychological violence.
+            Social media companies and governments have unfortunately been forced to impose limitations to freedom of speech.
             We aim to provide a tool that will proactively sustain harmony in the social circles by enabling evaluation of text messages.
-            Artificial Intelligence techniques have been applied, and you can visit our github repo here for an indepth view of the developme<br>
+            Artificial Intelligence techniques have been applied, and you can visit our github repo here for an indepth view of the development.
             """)
    st.header("The Visionaries")
    
@@ -95,11 +95,14 @@ with tab2:
    #    st.image(selectedImageUrl)
    col1, col2, col3, col4 = st.columns(4, gap = "small")
    
+   imagesList = [
+               "https://s.yimg.com/ny/api/res/1.2/C9KF4A9AhR9MVOVXFiQXoQ--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtjZj13ZWJw/https://o.aolcdn.com/images/dar/5845cadfecd996e0372f/34bd965fb8bab32b796e4cd6074fda470adfab8e/aHR0cDovL28uYW9sY2RuLmNvbS9kaW1zLXNoYXJlZC9kaW1zMy9HTE9CL2Nyb3AvMjQwM3gxNjAwKzArMzA5L3Jlc2l6ZS82NDB4NDI2IS9mb3JtYXQvanBnL3F1YWxpdHkvODUvaHR0cDovL28uYW9sY2RuLmNvbS9oc3Mvc3RvcmFnZS9taWRhcy85MzYwOTMzYjI3MWE4YzMxMzg5ZWVjM2M1MzVmY2EzNi8yMDIwNzg2NTYvQllDMTM2LmpwZw==",
+                  ]
+   members = [
+            "member"
+               ]
    with col1:
-      st.image()
-      st.write(f"""
-               
-               """)
+      st.image(imagesList[0], caption = members[0], use_column_width = 'always')
       
       
    
