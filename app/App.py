@@ -103,6 +103,12 @@ with tab2:
                ]
    with col1:
       st.image(imagesList[0], caption = members[0], use_column_width = 'always')
+   with col2:
+      st.image(imagesList[0], caption = members[0], use_column_width = 'always')
+   with col3:
+      st.image(imagesList[0], caption = members[0], use_column_width = 'always')
+   with col4:
+      st.image(imagesList[0], caption = members[0], use_column_width = 'always')
       
       
    
