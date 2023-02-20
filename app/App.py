@@ -54,7 +54,7 @@ with tab1:
       with col2:
          with st.form('inputted'):
             st.write('or just type that text here:')
-            txt = st.text_area("Please input your text", height = 100, max_chars= 250)
+            txt = st.text_area("Please input your text", height = 120, max_chars= 250)
             submitted2 = st.form_submit_button("Submit")
       if submitted1:
          bytes_data = file.read()
