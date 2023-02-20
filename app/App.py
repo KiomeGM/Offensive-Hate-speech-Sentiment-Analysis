@@ -49,15 +49,17 @@ with tab1:
       with col1:
          with st.form('uploaded'):
             st.write('Select .txt file for upload:')
-            st.file_uploader("Upload text",type = 'txt')
+            file = st.file_uploader("Upload text", type = 'txt', accept_multiple_files= False)
             submitted1 = st.form_submit_button("Submit")
       with col2:
          with st.form('inputted'):
             st.write('or just type that text here:')
-            txt = st.text_input("Please input your text")
+            txt = st.text_area("Please input your text", height = 100, max_chars= 250)
             submitted2 = st.form_submit_button("Submit")
       if submitted1:
-         st.write("Greating")
+         bytes_data = file.read()
+         st.write("filename:", file.name)
+         st.write(bytes_data)
       elif submitted2: 
          st.write("Greating again")
          
