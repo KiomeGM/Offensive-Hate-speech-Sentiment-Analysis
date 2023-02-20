@@ -70,7 +70,7 @@ with tab2:
             We aim to provide a tool that will proactively sustain harmony in the social circles by enabling evaluation of text messages.
             Artificial Intelligence techniques have been applied, and you can visit our github repo here for an indepth view of the development.
             """)
-   st.header("The Visionaries")
+   st.subheader("The Visionaries")
    
    # imageCarouselComponent = components.declare_component("image-carousel-component", path="frontend/public")
 
