@@ -1,7 +1,23 @@
 import streamlit as st
 import pandas as pd
-import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
 import streamlit.components.v1 as components
+import pickle
+
+with open("models/AdaBoost_Classifier.pkl", "rb") as pickle_file:
+        ada = pickle.load(pickle_file)
+with open("models/Decision_Tree_Classifier.pkl", "rb") as pickle_file:
+        dtc = pickle.load(pickle_file)
+with open("models/Logistic_Regression_Classifier.pkl", "rb") as pickle_file:
+        lr = pickle.load(pickle_file)
+with open("models/LSTM.pkl", "rb") as pickle_file:
+        lstm = pickle.load(pickle_file)
+with open("models/tokenizer.pkl", "rb") as pickle_file:
+        tokenizer = pickle.load(pickle_file)
+with open("models/vectorizer.pkl", "rb") as pickle_file:
+        vectorizer = pickle.load(pickle_file)
+models = [ada, dtc, lr]
 
 def add_bg_from_url():
     st.markdown(
@@ -28,6 +44,27 @@ def add_bg_from_url():
          """,
          unsafe_allow_html=True
      )
+   
+def tweet_predict(models, tweets):
+   outputs = []
+   out_tweets = []
+   out_prediction = []
+   for tweet in tweets:
+      for model in models:
+         df1 = vectorizer.transform([tweet]).toarray()
+         if(model.predict(df1) == 0):
+            output = "Hate Speech detected"
+         elif(model.predict(df1) == 1):
+            output = "Offensive Language detected"
+         elif(model.predict(df1) == 2):
+            output = "Neither"
+         outputs.append(output)
+      prediction = pd.Series(outputs).mode()
+      out_tweets.append(tweet)
+      out_prediction.append(prediction)
+      pred = {"Text": out_tweets,
+               "Prediction": out_prediction}
+   return pred,out_prediction
 
 add_bg_from_url()
 
@@ -44,25 +81,42 @@ button[data-baseweb="tab"] > div[data-testid="stMarkdownContainer"] > p {
 st.write(font_css, unsafe_allow_html=True)
 
 with tab1:
-      st.write("Will that text lead to social reproach? One way to find out:")
-      col1, col2 = st.columns(2)
-      with col1:
-         with st.form('uploaded'):
-            st.write('Select .txt file for upload:')
-            file = st.file_uploader("Upload text", type = 'txt', accept_multiple_files= False)
-            submitted1 = st.form_submit_button("Submit")
-      with col2:
-         with st.form('inputted'):
-            st.write('or just type that text here:')
-            txt = st.text_area("Please input your text", height = 120, max_chars= 250)
-            submitted2 = st.form_submit_button("Submit")
+   st.write("Will that text lead to social reproach? One way to find out:")
+   col1, col2 = st.columns(2)
+   with col1:
+      with st.form('uploaded'):
+         st.write('Select .csv file for upload. File should have just one column, which contains text.')
+         csv_file = st.file_uploader("Upload text", type = 'csv', accept_multiple_files= False)
+         submitted1 = st.form_submit_button("Submit")
+   with col2:
+      with st.form('inputted'):
+         st.write('or just type that text here:')
+         txt = st.text_area("Please input your text", height = 148, max_chars= 250)
+         submitted2 = st.form_submit_button("Submit")
+   
+   col3, col4 = st.columns((100,1))
+   with col3:
       if submitted1:
-         bytes_data = file.read()
-         st.write("filename:", file.name)
-         st.write(bytes_data)
+         with st.expander("Overview of uploaded .csv file. Showing top 3 rows"):
+            st.dataframe(pd.read_csv(csv_file).head(3))
+            st.write(pd.read_csv(csv_file).shape)
+         df_test = pd.read_csv(csv_file)
+         st.write("filename:", csv_file.name)
+         st.write(df_test.values.tolist())
+         tweets = df_test.values.tolist()
+         pred, = tweet_predict(models, tweets)
+         st.write(pd.DataFrame(pred))
       elif submitted2: 
-         st.write("Greating again")
-         
+         st.write('\"'+ txt + '\":\n\n')
+         tweets = []
+         tweets.append(txt)
+         pred, out_prediction = tweet_predict(models, tweets)
+         if str(out_prediction[0].tolist()[0]) == 'Neither':
+            st.write('The text has been determined to contain neither offensive language not hate speech.')
+         elif str(out_prediction[0].tolist()[0]) == "Offensive Language detected":
+            st.write('The text has been determined to contain offensive language.')
+         elif str(out_prediction[0].tolist()[0]) == "Hate Speech detected":
+            st.write('The text has been determined to contain hate speech.')   
 with tab2:
    st.markdown("""
             Offensive language and hate speech has strong linkage to a global increase in physical and psychological violence.
